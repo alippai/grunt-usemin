@@ -341,6 +341,12 @@ describe('FileProcessor', function () {
       assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '">');
     });
 
+    it('should replace two identical img references in the same line with revved versions', function () {
+      var content = '<img src="image.png"><img src="image.png">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<img src="' + filemapping['app/image.png'] + '"><img src="' + filemapping['app/image.png'] + '">');
+    });
+
     it('should replace object data reference with revved version', function () {
       var content = '<object type="image/svg+xml" data="image.svg">';
       var replaced = fp.replaceWithRevved(content, ['app']);
@@ -477,6 +483,12 @@ describe('FileProcessor', function () {
       var content = '<img src="image.svg#symbol">';
       var replaced = fp.replaceWithRevved(content, ['app']);
       assert.equal(replaced, '<img src="' + filemapping['app/image.svg'] + '#symbol">');
+    });
+
+    it('should replace two identical svg src references in a single line with revved version for img tag', function () {
+      var content = '<img src="image.svg#symbol"><img src="image.svg#symbol">';
+      var replaced = fp.replaceWithRevved(content, ['app']);
+      assert.equal(replaced, '<img src="' + filemapping['app/image.svg'] + '#symbol"><img src="' + filemapping['app/image.svg'] + '#symbol">');
     });
 
     it('should replace svg src reference with revved version for image tag', function () {
